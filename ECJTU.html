@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>现代主义 · 导航</title>
+    <style>
+        /* ----- 全局重置 & 字体 ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,800&display=swap');
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            background: #f5f0eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ----- 抽象几何背景 (现代主义构成) ----- */
+        .bg-geometry {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bg-geometry .shape {
+            position: absolute;
+            border-radius: 2px;
+            opacity: 0.25;
+            mix-blend-mode: multiply;
+        }
+
+        /* 色块 — 蒙德里安式构成 */
+        .shape--1 {
+            width: 42vw;
+            height: 38vh;
+            top: -6vh;
+            right: -8vw;
+            background: #e85d4a;
+            opacity: 0.18;
+            transform: rotate(6deg);
+        }
+        .shape--2 {
+            width: 28vw;
+            height: 52vh;
+            bottom: -10vh;
+            left: -6vw;
+            background: #2b5f8a;
+            opacity: 0.15;
+            transform: rotate(-4deg);
+        }
+        .shape--3 {
+            width: 18vw;
+            height: 18vw;
+            top: 28vh;
+            right: 12vw;
+            background: #e9b640;
+            opacity: 0.20;
+            border-radius: 50%;
+        }
+        .shape--4 {
+            width: 12vw;
+            height: 12vw;
+            bottom: 18vh;
+            right: 28vw;
+            background: #3f7e6b;
+            opacity: 0.18;
+            transform: rotate(45deg);
+        }
+        .shape--5 {
+            width: 8vw;
+            height: 8vw;
+            top: 14vh;
+            left: 10vw;
+            background: #c44f7c;
+            opacity: 0.20;
+            border-radius: 50%;
+        }
+
+        /* 细网格线 (现代主义理性感) */
+        .grid-lines {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.035) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        /* ----- 主卡片 ----- */
+        .card {
+            position: relative;
+            z-index: 1;
+            max-width: 820px;
+            width: 100%;
+            background: rgba(255, 252, 248, 0.78);
+            backdrop-filter: blur(18px) saturate(1.2);
+            -webkit-backdrop-filter: blur(18px) saturate(1.2);
+            border-radius: 48px;
+            padding: 3.6rem 4rem;
+            box-shadow:
+                0 30px 80px -20px rgba(0, 0, 0, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: transform 0.2s ease;
+        }
+
+        /* ----- 标题区 (现代主义排版) ----- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            margin-bottom: 3.2rem;
+            padding-bottom: 1.8rem;
+            border-bottom: 3px solid #1a1a1a;
+        }
+
+        .header__title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            color: #1a1a1a;
+            text-transform: uppercase;
+        }
+
+        .header__title span {
+            display: block;
+            font-weight: 400;
+            font-size: 0.9rem;
+            letter-spacing: 0.15em;
+            color: #6b6b6b;
+            margin-top: 0.4rem;
+            text-transform: uppercase;
+        }
+
+        .header__badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #fff;
+            background: #1a1a1a;
+            padding: 0.4rem 1.2rem;
+            border-radius: 100px;
+            white-space: nowrap;
+            margin-bottom: 0.2rem;
+        }
+
+        /* ----- 链接网格 (现代主义网格系统) ----- */
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.2rem 1.8rem;
+            margin-bottom: 2.8rem;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.9rem 1.2rem;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            transition: all 0.25s ease;
+            text-decoration: none;
+            color: #1a1a1a;
+            font-weight: 500;
+            font-size: 1.05rem;
+            letter-spacing: -0.01em;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .link-item:hover {
+            background: #1a1a1a;
+            color: #fff;
+            border-color: #1a1a1a;
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.25);
+        }
+
+        .link-item .icon {
+            font-size: 1.3rem;
+            line-height: 1;
+            flex-shrink: 0;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .link-item:hover .icon {
+            opacity: 1;
+        }
+
+        .link-item .label {
+            flex: 1;
+        }
+
+        .link-item .tag {
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #888;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 0.15rem 0.6rem;
+            border-radius: 100px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .link-item:hover .tag {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ccc;
+        }
+
+        /* 特殊行 — “or” 连接符 保留原意 */
+        .link-row-or {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            grid-column: 1 / -1;
+            padding: 0.2rem 0;
+        }
+
+        .link-row-or .or-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #888;
+            padding: 0 0.2rem;
+        }
+
+        /* ----- 底部署名 (现代主义极简) ----- */
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            padding-top: 1.8rem;
+            border-top: 2px solid rgba(0, 0, 0, 0.06);
+            font-size: 0.85rem;
+            color: #6b6b6b;
+        }
+
+        .footer__signature {
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            color: #1a1a1a;
+        }
+
+        .footer__signature em {
+            font-style: normal;
+            background: #1a1a1a;
+            color: #fff;
+            padding: 0.1rem 1rem;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            margin-left: 0.4rem;
+        }
+
+        .footer__meta {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .footer__meta .dot {
+            width: 4px;
+            height: 4px;
+            background: #1a1a1a;
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        /* ----- 响应式调整 ----- */
+        @media (max-width: 640px) {
+            .card {
+                padding: 2rem 1.5rem;
+                border-radius: 32px;
+            }
+            .header__title {
+                font-size: 2rem;
+            }
+            .link-grid {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+            .link-item {
+                padding: 0.8rem 1rem;
+                font-size: 0.95rem;
+            }
+            .shape--1,
+            .shape--2 {
+                opacity: 0.12;
+            }
+            .shape--3,
+            .shape--4,
+            .shape--5 {
+                display: none;
+            }
+            .footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.6rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .card {
+                padding: 1.5rem 1rem;
+                border-radius: 24px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+            .header__badge {
+                align-self: flex-start;
+            }
+        }
+
+        /* ----- 入场动画 (微妙) ----- */
+        .card {
+            animation: floatUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 0;
+                transform: translateY(24px) scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .link-item {
+    /* ... 原有样式 ... */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); /* 增强过渡曲线 */
+        }
+
+        .link-item:hover {
+    background: #1a1a1a;
+    color: #fff;
+    border-color: #1a1a1a;
+    transform: translateY(-6px) scale(1.02); /* 增加上浮距离 */
+    box-shadow: 
+        0 20px 40px -8px rgba(0, 0, 0, 0.35),
+        0 8px 16px -4px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08); /* 多层阴影+内发光 */
+}
+        .link-item {
+            animation: fadeIn 0.5s ease both;
+        }
+        .link-item:nth-child(1) {
+            animation-delay: 0.04s;
+        }
+        .link-item:nth-child(2) {
+            animation-delay: 0.08s;
+        }
+        .link-item:nth-child(3) {
+            animation-delay: 0.12s;
+        }
+        .link-item:nth-child(4) {
+            animation-delay: 0.16s;
+        }
+        .link-item:nth-child(5) {
+            animation-delay: 0.20s;
+        }
+        .link-item:nth-child(6) {
+            animation-delay: 0.24s;
+        }
+        .link-item:nth-child(7) {
+            animation-delay: 0.28s;
+        }
+        .link-item:nth-child(8) {
+            animation-delay: 0.32s;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 抽象几何背景 (现代主义构成) -->
+    <div class="bg-geometry">
+        <div class="shape shape--1"></div>
+        <div class="shape shape--2"></div>
+        <div class="shape shape--3"></div>
+        <div class="shape shape--4"></div>
+        <div class="shape shape--5"></div>
+    </div>
+    <div class="grid-lines"></div>
+
+    <!-- 主卡片 -->
+    <main class="card">
+
+        <!-- 头部 -->
+        <header class="header">
+            <div class="header__title">
+                导航·构成
+                <span>现代主义工具集</span>
+            </div>
+            <div class="header__badge">✦ 2026</div>
+        </header>
+
+        <!-- 链接网格 -->
+        <div class="link-grid">
+
+            <!-- 1. 函数计算器 -->
+            <a href="https://www.geogebra.org/calculator" class="link-item" target="_blank" rel="noopener">
+                <span class="icon">📐</span>
+                <span class="label">函数计算器</span>
+                <span class="tag">工具</span>
+            </a>
+
+            <!-- 2. 音乐获取 (海外) -->
+            <a href="https://music.gdstudio.org/" class="link-item" target="_blank" rel="noopener">
+                <span class="icon">🎵</span>
+                <span class="label">音乐获取</span>
+                <span class="tag">海外</span>
+            </a>
+
+            <!-- 3. “or” 行：音乐获取（国内） -->
+            <div class="link-row-or">
+                <span class="or-text">or</span>
+                <a href="https://www.hifini.com" class="link-item" target="_blank" rel="noopener" style="flex:1; margin:0;">
+                    <span class="icon">🎶</span>
+                    <span class="label">音乐获取 (国内)</span>
+                    <span class="tag">国内</span>
+                </a>
+            </div>
+
+            <!-- 4. 收编网站 -->
+            <a href="https://nav.qinight.com/" class="link-item" target="_blank" rel="noopener">
+                <span class="icon">🗂️</span>
+                <span class="label">收编网站</span>
+                <span class="tag">导航</span>
+            </a>
+
+            <!-- 5. 芝士特区 -->
+            <a href="https://djzmate.github.io/second/qq.html" class="link-item" target="_blank" rel="noopener">
+                <span class="icon">🧀</span>
+                <span class="label">芝士特区</span>
+                <span class="tag">专区</span>
+            </a>
+
+            <!-- 6. 在线压缩 -->
+            <a href="https://www.compress2go.com/zh" class="link-item" target="_blank" rel="noopener">
+                <span class="icon">🗜️</span>
+                <span class="label">在线压缩</span>
+                <span class="tag">工具</span>
+            </a>
+
+            <!-- 7. 在线计算 (修正 https) -->
+            <a href="https://www.metools.info" class="link-item" target="_blank" rel="noopener">
+                <span class="icon">🧮</span>
+                <span class="label">在线计算</span>
+                <span class="tag">工具</span>
+            </a>
+
+        </div>
+
+        <!-- 底部 -->
+        <footer class="footer">
+            <div class="footer__signature">
+                by 邓杰中
+                <em>✦ 现代主义</em>
+            </div>
+            <div class="footer__meta">
+                <span>构成 · 几何</span>
+                <span class="dot"></span>
+                <span>理性 · 秩序</span>
+            </div>
+        </footer>
+
+    </main>
+
+</body>
+</html>
